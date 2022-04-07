@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 //import the components we will need
 import { AnimalCard } from './AnimalCard';
-import { getAllAnimals } from "../../modules/AnimalManager";
+import { getAllAnimals, deleteAnimal } from "../../modules/AnimalManager";
 
 export const AnimalList = () => {
     // The initial state is an empty array
@@ -14,6 +14,11 @@ export const AnimalList = () => {
         })
     }
 
+    const handleDeleteAnimal = id => {
+        deleteAnimal(id)
+        .then(() => getAllAnimals().then(setAnimals))
+    };
+
     // got the animlas from the API on the component's first render
     useEffect(() => {
         getAnimals();
@@ -22,10 +27,10 @@ export const AnimalList = () => {
     // Finally we use .map() to "loop over" the animals array to show a list of animal cards
     return (
         <div className="container-cards">
-            {animals.map(animal => <AnimalCard animal={animal} key={animal.id} />)}
+            {animals.map(animal => <AnimalCard 
+            animal={animal} 
+            key={animal.id} 
+            handleDeleteAnimal={handleDeleteAnimal} />)}
         </div>
     )
 }
-
-
-
